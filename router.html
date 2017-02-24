@@ -90,47 +90,52 @@ a {
     background: transparent!important;
     color: #666;
 }
-.news__item
-{
+
+.news__item {
     overflow: hidden;
     border-bottom: 1px solid #eee;
 }
-.news__item-title
-{
+
+.news__item-title {
     margin-top: 10;
     font-size: 16px;
     margin-bottom: 8px;
 }
+
 @media (min-width: 1200px) {
-    .container,.main-content {
+    .container,
+    .main-content {
         width: 1140px;
     }
 }
 
 @media (min-width: 992px) {
-    .container,.main-content {
+    .container,
+    .main-content {
         width: 970px;
     }
 }
 
 @media (min-width: 768px) {
-    .container,.main-content {
+    .container,
+    .main-content {
         width: 750px;
     }
 }
 
 .main-content {
     background: #fff;
-    border: 1px solid rgba(0,0,0,.09);
-    box-shadow: 0 1px 4px 0 rgba(0,0,0,.04);
+    border: 1px solid rgba(0, 0, 0, .09);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .04);
     border-radius: 3px;
-    margin:30px auto;
+    margin: 30px auto;
 }
-.news__item-meta a
-{
-        color: #009a61;
- margin-right: 10px!important;   
+
+.news__item-meta a {
+    color: #009a61;
+    margin-right: 10px!important;
 }
+
 .news__item-zan {
     float: left;
     margin: 15px 10px 15px 20px;
@@ -141,30 +146,35 @@ a {
     transition: all .1s;
     border-color: transparent;
     background: #f6f6f6;
-    box-shadow: 0 1px 2px 0 rgba(0,0,0,.24);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .24);
     border-radius: 3px;
 }
+
 .news__item-zan span {
     display: block;
     color: #666;
 }
+
 .news__item-zan-icon {
     height: 16px;
     width: 100%;
     background: transparent url(https://sf-static.b0.upaiyun.com/v-58aea7a0/global/img/vote-bg.svg) 0 0 no-repeat;
     background-size: auto 60px;
 }
+
 .news__item-zan-text {
     font-size: 18px;
     display: none!important;
     line-height: 1.3;
 }
+
 .news__item-comment {
     position: relative;
     float: right;
     height: 76px;
     width: 64px;
 }
+
 .news__item-comment .news__item-comment-inner {
     font-size: 13px;
     width: 100%;
@@ -176,6 +186,7 @@ a {
     text-align: right;
     right: 20px;
 }
+
 .news__item-comment-box-arrow {
     display: block;
     width: 0;
@@ -189,6 +200,7 @@ a {
     top: 5px;
     z-index: -1;
 }
+
 .news__item-comment-box {
     background: #7fbdb8;
     color: #fff;
@@ -201,19 +213,20 @@ a {
     min-width: 24px;
     text-align: center;
 }
+
 .news__item-info {
     padding: 15px 0;
     padding-left: 75px;
     padding-right: 64px;
 }
-.validation1
-{
+
+.validation1 {
     margin: 20px auto;
     width: 600px;
     text-align: center;
 }
-.validation1 label
-{
+
+.validation1 label {
     width: 60px;
     text-align: center;
     display: inline-block;
@@ -246,67 +259,95 @@ a {
             </div>
         </div>
         <div class="main-content">
-            <list-item v-for="item in listItems" :item="item"></list-item>
+            <infor-item v-for="item in listItems" :item="item"></infor-item>
         </div>
-        <footer-bar></footer-bar>
-        <!-- 路由匹配到的组件将渲染在这里 -->
+        <a v-link="{path: '/foo' }">Go to Foo</a>
+        <a v-link="{path: '/bar' }">Go to Bar</a>
+        <router-view></router-view>
 </body>
 <script src="https://cdn.bootcss.com/vue/1.0.24/vue.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://unpkg.com/vue-validator@2.1.7/dist/vue-validator.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/0.7.10/vue-router.min.js"></script>
 <script>
-Vue.component('list-item', {
-    template:'<div class="news__item"><div class="news__item-zan"><span class="news__item-zan-icon"></span><span class="news__item-zan-number">8</span><span class="news__item-zan-text">赞</span></div><div class="news__item-comment"><a href=""><div class="news__item-comment-inner"><span class="news__item-comment-box">0</span><span class="news__item-comment-box-arrow"></span></div></a></div><div class="news__item-info-title"><h4 class="news__item-title"><a class="mr10">{{item.name}}</a></h4><p class = "news__item-meta"><span> <a class = "mr10" href=""> {{item.author}}</a>5小时前发布于</span><a class="ml10" href="">{{item.place}}</a><a href ="" class = "news__item-external-link" > {{item.url}}</a></p></div></div>',
+var inforItem = Vue.extend({
+    template: '<div class="news__item"><div class="news__item-zan"><span class="news__item-zan-icon"></span><span class="news__item-zan-number">8</span><span class="news__item-zan-text">赞</span></div><div class="news__item-comment"><a href=""><div class="news__item-comment-inner"><span class="news__item-comment-box">0</span><span class="news__item-comment-box-arrow"></span></div></a></div><div class="news__item-info-title"><h4 class="news__item-title"><a class="mr10">{{item.name}}</a></h4><p class = "news__item-meta"><span> <a class = "mr10" href=""> {{item.author}}</a>5小时前发布于</span><a class="ml10" href="">{{item.place}}</a><a href ="" class = "news__item-external-link" > {{item.url}}</a></p></div></div>',
     props: ['item']
 })
-Vue.component('nav-bar', {
+var navBar = Vue.extend({
     template: '<div class="nav"><ul><li v-for="item in items[0]" class="nav_item"><a href="">{{item}}</a></li><li v-for="item in items[1]" class="nav_item1"><a href="">{{item}}</a></li></ul></div>',
     props: ['items']
 })
-Vue.component('hot-bar', {
+var hotBar = Vue.extend({
     template: '<div><div class="hot-logo"><h1><a href=""></a></h1><ul class="menu"><li class="menu_item"><a href="">热门的</a></li><li class=""><a href="">最新的</a></li></ul></div>',
     props: ['cc']
 })
-Vue.component('footer-bar', {
-    template: '<div></div>',
+var footerBar = Vue.extend({
+    template: '<div>hello footer</div>',
     props: ['cc']
 })
-var example1 = new Vue({
-    el: '#app',
-    data: {
-        listItems: [{
-            message: 'Foo',
-            name:"web前端",
-            author:"aaaa",
-            place:"前端",
-            url:'zhuanlan.zhihu.com',
-        }, {
-            message: 'Foo',
-            name:"web前端",
-            author:"dddd",
-            place:"前端",
-            url:'zhuanlan.zhihu.com',
-        }],
-        navBar: [
-            ["问答", "专栏", "头条"],
-            ["前端", "后端", "iOS", "Android", "安全", "工具", "程序员"]
-        ],
-        username:"",
-        comment:"",
+var popBar = Vue.extend({
+    template: '<div>hello pop</div>',
+    props: ['cc']
+})
+Vue.component('infor-item', inforItem);
+Vue.component('nav-bar', navBar);
+Vue.component('hot-bar', hotBar);
+Vue.component('footer-bar', footerBar);
+Vue.component('pop-bar', popBar);
+
+var router = new VueRouter()
+
+// 定义路由规则
+// 每条路由规则应该映射到一个组件。这里的“组件”可以是一个使用 Vue.extend
+// 创建的组件构造函数，也可以是一个组件选项对象。
+// 稍后我们会讲解嵌套路由
+router.map({
+    '/foo': {
+        component: footerBar
     },
-    methods:
-    {
-        submit:function (argument) {
-            if(argument.valid)
-            {
-                alert("用户名:"+this.username+'（评论：'+this.comment+'）');
-            }
-            else
-            {
+    '/bar': {
+        component: popBar
+    }
+})
+
+// router.start(App, '#app');
+var App = Vue.extend({
+    data() {
+        return {
+            listItems: [{
+                message: 'Foo',
+                name: "web前端",
+                author: "aaaa",
+                place: "前端",
+                url: 'zhuanlan.zhihu.com',
+            }, {
+                message: 'Foo',
+                name: "web前端",
+                author: "dddd",
+                place: "前端",
+                url: 'zhuanlan.zhihu.com',
+            }],
+            navBar: [
+                ["问答", "专栏", "头条"],
+                ["前端", "后端", "iOS", "Android", "安全", "工具", "程序员"]
+            ],
+            username: "",
+            comment: "",
+        }
+    },
+    methods: {
+        submit: function(argument) {
+            if (argument.valid) {
+                alert("用户名:" + this.username + '（评论：' + this.comment + '）');
+            } else {
                 alert("无效");
             }
         }
-    }
+    },
 })
+router.start(App, '#app');
+// router.go('/');
+// 现在我们可以启动应用了！
 </script>
 
 </html>
