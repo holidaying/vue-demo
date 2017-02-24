@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>vue router</title>
+    <title>vue vuex</title>
 </head>
 <style>
 * {
@@ -231,6 +231,15 @@ a {
     text-align: center;
     display: inline-block;
 }
+
+.btn-increase {
+    height: 40px;
+    width: 100px;
+    border: 5px;
+    cursor: pointer;
+    background: #ff9d00;
+    color: #fff;
+}
 </style>
 
 <body>
@@ -259,80 +268,73 @@ a {
             </div>
         </div>
         <div class="main-content">
-            <infor-item v-for="item in listItems" :item="item"></infor-item>
+            <list-item v-for="item in listItems" :item="item"></list-item>
         </div>
-        <a v-link="{path: '/foo' }">Go to Foo</a>
-        <a v-link="{path: '/bar' }">Go to Bar</a>
-        <router-view></router-view>
+        <div class="main-content">
+            <p>{{count}}</p>
+            <p>store.commit('increment');<span v-on:click="increase" class="btn-increase">点击触发</span></p>
+        </div>
+        <footer-bar></footer-bar>
+        <!-- 路由匹配到的组件将渲染在这里 -->
 </body>
 <script src="https://cdn.bootcss.com/vue/1.0.24/vue.js" type="text/javascript" charset="utf-8"></script>
 <script src="https://unpkg.com/vue-validator@2.1.7/dist/vue-validator.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/0.7.10/vue-router.min.js"></script>
+<script src="https://unpkg.com/vuex"></script>
 <script>
-var inforItem = Vue.extend({
+Vue.component('list-item', {
     template: '<div class="news__item"><div class="news__item-zan"><span class="news__item-zan-icon"></span><span class="news__item-zan-number">8</span><span class="news__item-zan-text">赞</span></div><div class="news__item-comment"><a href=""><div class="news__item-comment-inner"><span class="news__item-comment-box">0</span><span class="news__item-comment-box-arrow"></span></div></a></div><div class="news__item-info-title"><h4 class="news__item-title"><a class="mr10">{{item.name}}</a></h4><p class = "news__item-meta"><span> <a class = "mr10" href=""> {{item.author}}</a>5小时前发布于</span><a class="ml10" href="">{{item.place}}</a><a href ="" class = "news__item-external-link" > {{item.url}}</a></p></div></div>',
     props: ['item']
 })
-var navBar = Vue.extend({
+Vue.component('nav-bar', {
     template: '<div class="nav"><ul><li v-for="item in items[0]" class="nav_item"><a href="">{{item}}</a></li><li v-for="item in items[1]" class="nav_item1"><a href="">{{item}}</a></li></ul></div>',
     props: ['items']
 })
-var hotBar = Vue.extend({
+Vue.component('hot-bar', {
     template: '<div><div class="hot-logo"><h1><a href=""></a></h1><ul class="menu"><li class="menu_item"><a href="">热门的</a></li><li class=""><a href="">最新的</a></li></ul></div>',
     props: ['cc']
 })
-var footerBar = Vue.extend({
-    template: '<div>hello footer</div>',
+Vue.component('footer-bar', {
+    template: '<div></div>',
     props: ['cc']
 })
-var popBar = Vue.extend({
-    template: '<div>hello pop</div>',
-    props: ['cc']
-})
-Vue.component('infor-item', inforItem);
-Vue.component('nav-bar', navBar);
-Vue.component('hot-bar', hotBar);
-Vue.component('footer-bar', footerBar);
-Vue.component('pop-bar', popBar);
-
-var router = new VueRouter()
-
-// 定义路由规则
-// 每条路由规则应该映射到一个组件。这里的“组件”可以是一个使用 Vue.extend
-// 创建的组件构造函数，也可以是一个组件选项对象。
-// 稍后我们会讲解嵌套路由
-router.map({
-    '/foo': {
-        component: footerBar
+const store = new Vuex.Store({
+        state: {
+            count: 0
+        },
+        mutations: {
+            increment(state) {
+                state.count++
+            }
+        }
+    })
+    // store.commit('increment');
+var example1 = new Vue({
+    el: '#app',
+    data: {
+        listItems: [{
+            message: 'Foo',
+            name: "web前端",
+            author: "aaaa",
+            place: "前端",
+            url: 'zhuanlan.zhihu.com',
+        }, {
+            message: 'Foo',
+            name: "web前端",
+            author: "dddd",
+            place: "前端",
+            url: 'zhuanlan.zhihu.com',
+        }],
+        navBar: [
+            ["问答", "专栏", "头条"],
+            ["前端", "后端", "iOS", "Android", "安全", "工具", "程序员"]
+        ],
+        username: "",
+        comment: "",
+        count:"0"
     },
-    '/bar': {
-        component: popBar
-    }
-})
-
-// router.start(App, '#app');
-var App = Vue.extend({
-    data() {
-        return {
-            listItems: [{
-                message: 'Foo',
-                name: "web前端",
-                author: "aaaa",
-                place: "前端",
-                url: 'zhuanlan.zhihu.com',
-            }, {
-                message: 'Foo',
-                name: "web前端",
-                author: "dddd",
-                place: "前端",
-                url: 'zhuanlan.zhihu.com',
-            }],
-            navBar: [
-                ["问答", "专栏", "头条"],
-                ["前端", "后端", "iOS", "Android", "安全", "工具", "程序员"]
-            ],
-            username: "",
-            comment: "",
+    computed: {
+        count() {
+            return store.state.count
         }
     },
     methods: {
@@ -342,12 +344,12 @@ var App = Vue.extend({
             } else {
                 alert("无效");
             }
+        },
+        increase: function() {
+            store.commit('increment');
         }
-    },
+    }
 })
-router.start(App, '#app');
-// router.go('/');
-// 现在我们可以启动应用了！
 </script>
 
 </html>
