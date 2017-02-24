@@ -40,6 +40,7 @@
 
 ```
 > 对应四个组件
+
 ![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2604175-8a4fabe9d6e741b5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ##3、启动vue
 ```
@@ -81,11 +82,11 @@ var example1 = new Vue({
     }
   ```
 ##4、利用vue-validator校验
->前提条件 
+> 前提条件 
  * 1.下载vue-validator文件
  * 2.定义validator标签，并定义name属性，以便校验时使用
  * 3.form中添加novalidate属性
->本章校验的逻辑是当username有值时显示提交按钮，没有值时显示错误的提示信息；当评论数超过11个字符时，错误信息出现。
->当点击提交按钮时，如果username有值，同时评论数小于11个字符时，调用submit函数显示成功，否则失败
->主要用的是v-validate:username="['required']",v-validate:comment="{maxlength: 11}" ，argument.valid等校验语法
->当输入框的语法不符合规范时，$validation1.username.required取他们的值就为true；当所有的语法符合规范时$validation1.valid才为true
+> 本章校验的逻辑是当username有值时显示提交按钮，没有值时显示错误的提示信息；当评论数超过11个字符时，错误信息出现。
+> 当点击提交按钮时，如果username有值，同时评论数小于11个字符时，调用submit函数显示成功，否则失败
+> 主要用的是v-validate:username="['required']",v-validate:comment="{maxlength: 11}" ，argument.valid等校验语法
+> 当输入框的语法不符合规范时，$validation1.username.required取他们的值就为true；当所有的语法符合规范时$validation1.valid才为true
