@@ -206,27 +206,39 @@ a {
     padding-left: 75px;
     padding-right: 64px;
 }
+.validation1
+{
+    margin: 20px auto;
+    width: 600px;
+    text-align: center;
+}
+.validation1 label
+{
+    width: 60px;
+    text-align: center;
+    display: inline-block;
+}
 </style>
 
 <body>
     <div id="app">
-        <!-- <validator name="validation1">
-            <form novalidate>
+        <validator name="validation1">
+            <form novalidate class="validation1">
                 <div class="username-field">
-                    <label for="username">username:</label>
-                    <input id="username" type="text" v-validate:username="['required']">
+                    <label for="username">用户名:</label>
+                    <input id="username" type="text" v-validate:username="['required']" v-model="username">
                 </div>
                 <div class="comment-field">
-                    <label for="comment">comment:</label>
-                    <input id="comment" type="text" v-validate:comment="{ maxlength: 11 }">
+                    <label for="comment">评论:</label>
+                    <input id="comment" type="text" v-validate:comment="{maxlength: 11}" v-model="comment">
                 </div>
                 <div class="errors">
                     <p v-if="$validation1.username.required">Required your name.</p>
                     <p v-if="$validation1.comment.maxlength">Your comment is too long.</p>
                 </div>
-                <input type="submit" value="send" v-if="$validation1.valid">
+                <input type="submit" value="提交测试" v-if="!$validation1.username.required" v-on:click="submit($validation1)">
             </form>
-        </validator> -->
+        </validator>
         <div class="header-bar">
             <div class="container">
                 <nav-bar :items="navBar"></nav-bar>
@@ -242,15 +254,15 @@ a {
 <script src="https://unpkg.com/vue-validator@2.1.7/dist/vue-validator.min.js"></script>
 <script>
 Vue.component('list-item', {
-    template:'<div class="news__item"><div class="news__item-zan"><span class="news__item-zan-icon"></span><span class="news__item-zan-number">8</span><span class="news__item-zan-text">赞</span></div><div class="news__item-comment"><a href="/p/1210000008465386"><div class="news__item-comment-inner"><span class="news__item-comment-box">0</span><span class="news__item-comment-box-arrow"></span></div></a></div><div class="news__item-info-title"><h4 class="news__item-title"><a class="mr10" target = "_blank">{{item.name}}</a></h4><p class = "news__item-meta"><span> <a class = "mr10" href = "/u/sunny"> {{item.author}}</a>5小时前发布于</span><a class="ml10" href="/news/frontend">{{item.place}}</a><href ="" class = "news__item-external-link" > {{item.url}}</a></p></div></div>',
+    template:'<div class="news__item"><div class="news__item-zan"><span class="news__item-zan-icon"></span><span class="news__item-zan-number">8</span><span class="news__item-zan-text">赞</span></div><div class="news__item-comment"><a href=""><div class="news__item-comment-inner"><span class="news__item-comment-box">0</span><span class="news__item-comment-box-arrow"></span></div></a></div><div class="news__item-info-title"><h4 class="news__item-title"><a class="mr10">{{item.name}}</a></h4><p class = "news__item-meta"><span> <a class = "mr10" href=""> {{item.author}}</a>5小时前发布于</span><a class="ml10" href="">{{item.place}}</a><a href ="" class = "news__item-external-link" > {{item.url}}</a></p></div></div>',
     props: ['item']
 })
 Vue.component('nav-bar', {
-    template: '<div class="nav"><ul><li v-for="item in items[0]" class="nav_item"><a href="nav_item">{{item}}</a></li><li v-for="item in items[1]" class="nav_item1"><a href="nav_item">{{item}}</a></li></ul></div>',
+    template: '<div class="nav"><ul><li v-for="item in items[0]" class="nav_item"><a href="">{{item}}</a></li><li v-for="item in items[1]" class="nav_item1"><a href="">{{item}}</a></li></ul></div>',
     props: ['items']
 })
 Vue.component('hot-bar', {
-    template: '<div><div class="hot-logo"><h1><a href="/news"></a></h1><ul class="menu"><li class="menu_item"><a href="/news">热门的</a></li><li class=""><a href="/news/newest">最新的</a></li></ul></div>',
+    template: '<div><div class="hot-logo"><h1><a href=""></a></h1><ul class="menu"><li class="menu_item"><a href="">热门的</a></li><li class=""><a href="">最新的</a></li></ul></div>',
     props: ['cc']
 })
 Vue.component('footer-bar', {
@@ -276,7 +288,22 @@ var example1 = new Vue({
         navBar: [
             ["问答", "专栏", "头条"],
             ["前端", "后端", "iOS", "Android", "安全", "工具", "程序员"]
-        ]
+        ],
+        username:"",
+        comment:"",
+    },
+    methods:
+    {
+        submit:function (argument) {
+            if(argument.valid)
+            {
+                alert("用户名:"+this.username+'（评论：'+this.comment+'）');
+            }
+            else
+            {
+                alert("无效");
+            }
+        }
     }
 })
 </script>
