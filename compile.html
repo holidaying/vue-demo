@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+  <head></head>
+  <body>
+  <div id="app">
+    <input type="text" id="a" v-model="text">
+    {{text}}
+  </div>
+　<script type="text/javascript">
+　　function Compile(node, vm) {
+      if(node) {this.$frag = this.nodeToFragment(node, vm);
+        return this.$frag;
+      }
+    }
+    Compile.prototype = {
+      nodeToFragment: function(node, vm) {
+        var self = this;
+        var frag = document.createDocumentFragment();
+        var child;
+
+        while(child = node.firstChild) {
+          self.compileElement(child, vm);
+          frag.append(child); // 将所有子节点添加到fragment中，child是指向元素首个子节点的引用。将child引用指向的对象append到父对象的末尾，原来child引用的对象就跳到了frag对象的末尾，而child就指向了本来是排在第二个的元素对象。如此循环下去，链接就逐个往后跳了
+        }
+        return frag;
+      },
+      compileElement: function(node, vm) {
+        var reg = /\{\{(.*)\}\}/;
+
+        //节点类型为元素
+        if(node.nodeType === 1) {
+          var attr = node.attributes;
+          // 解析属性
+          for(var i = 0; i < attr.length; i++ ) {
+            if(attr[i].nodeName == 'v-model') {
+              var name = attr[i].nodeValue; // 获取v-model绑定的属性名
+              node.addEventListener('input', function(e) {
+                // 给相应的data属性赋值，进而触发该属性的set方法
+                 vm.data[name]= e.target.value;
+              });
+              node.value = vm.data[name]; // 将data的值赋给该node
+              node.removeAttribute('v-model');
+            }
+          };
+        }
+        //节点类型为text
+　　　　if(node.nodeType === 3) {
+          if(reg.test(node.nodeValue)) {
+            var name = RegExp.$1; // 获取匹配到的字符串
+            name = name.trim();
+            node.nodeValue = vm.data[name]; // 将data的值赋给该node
+          }
+        }
+      },
+    }
+ 　　function Vue(options) {
+      this.data = options.data;
+      var data = this.data;
+      var id = options.el;
+      var dom =new Compile(document.getElementById(id),this);
+      // 编译完成后，将dom返回到app中
+      document.getElementById(id).appendChild(dom);
+    }
+    var vm = new Vue({
+      el: 'app',
+      data: {
+        text: 'hello world'
+      }
+    });
+  </script>
+  </body>
+</html>

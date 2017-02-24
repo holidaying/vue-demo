@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue demo</title>
+</head>
+<style>
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, WenQuanYi Micro Hei, Microsoft Yahei, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fafafa;
+}
+
+.header-bar {
+    background: #fff;
+    border-top: 2px solid #009a61;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .24), inset 0 0 0 0 #009a61;
+}
+
+.container {
+    margin: 0px auto;
+}
+
+ul li {
+    list-style: none;
+    display: inline-block;
+}
+
+a {
+    text-decoration: none;
+}
+
+.nav {
+    border-bottom: 1px solid rgba(0, 0, 0, .08);
+}
+
+.nav .nav_item a {
+    display: block;
+    padding: 10px;
+    color: #9dccb6;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.nav .nav_item1 a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.hot-logo {
+    line-height: 60px;
+}
+
+.hot-logo h1 a {
+    background: url(https://sf-static.b0.upaiyun.com/v-58aea7a0/global/img/logo.svg) no-repeat 0, url(https://sf-static.b0.upaiyun.com/v-58aea7a0/global/img/toutiao.svg) 100% no-repeat;
+    background-size: 156px 30px, 40px 30px;
+    width: 207px;
+    float: left;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: capitalize;
+    height: 60px;
+}
+
+.hot-logo .menu {
+    margin-left: 20px;
+}
+
+.hot-logo .menu a {
+    line-height: 60px;
+    display: inline-block;
+    padding: 0 13px;
+    height: 30px;
+    color: #666;
+    border-radius: 2px;
+    font-size: 16px;
+    text-decoration: none;
+    background: transparent!important;
+    color: #666;
+}
+.news__item
+{
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+}
+.news__item-title
+{
+    margin-top: 10;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+@media (min-width: 1200px) {
+    .container,.main-content {
+        width: 1140px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container,.main-content {
+        width: 970px;
+    }
+}
+
+@media (min-width: 768px) {
+    .container,.main-content {
+        width: 750px;
+    }
+}
+
+.main-content {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.09);
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.04);
+    border-radius: 3px;
+    margin:30px auto;
+}
+.news__item-meta a
+{
+        color: #009a61;
+ margin-right: 10px!important;   
+}
+.news__item-zan {
+    float: left;
+    margin: 15px 10px 15px 20px;
+    width: 40px;
+    height: 44px;
+    text-align: center;
+    -webkit-transition: all .1s;
+    transition: all .1s;
+    border-color: transparent;
+    background: #f6f6f6;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.24);
+    border-radius: 3px;
+}
+.news__item-zan span {
+    display: block;
+    color: #666;
+}
+.news__item-zan-icon {
+    height: 16px;
+    width: 100%;
+    background: transparent url(https://sf-static.b0.upaiyun.com/v-58aea7a0/global/img/vote-bg.svg) 0 0 no-repeat;
+    background-size: auto 60px;
+}
+.news__item-zan-text {
+    font-size: 18px;
+    display: none!important;
+    line-height: 1.3;
+}
+.news__item-comment {
+    position: relative;
+    float: right;
+    height: 76px;
+    width: 64px;
+}
+.news__item-comment .news__item-comment-inner {
+    font-size: 13px;
+    width: 100%;
+    color: #999;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    text-align: right;
+    right: 20px;
+}
+.news__item-comment-box-arrow {
+    display: block;
+    width: 0;
+    height: 0;
+    border: 10px solid #7fbdb8;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    position: absolute;
+    right: -10px;
+    top: 5px;
+    z-index: -1;
+}
+.news__item-comment-box {
+    background: #7fbdb8;
+    color: #fff;
+    height: 20px;
+    line-height: 20px;
+    display: inline-block;
+    border-radius: 3px;
+    padding: 0 6px;
+    position: relative;
+    min-width: 24px;
+    text-align: center;
+}
+.news__item-info {
+    padding: 15px 0;
+    padding-left: 75px;
+    padding-right: 64px;
+}
+</style>
+
+<body>
+    <div id="app">
+        <!-- <validator name="validation1">
+            <form novalidate>
+                <div class="username-field">
+                    <label for="username">username:</label>
+                    <input id="username" type="text" v-validate:username="['required']">
+                </div>
+                <div class="comment-field">
+                    <label for="comment">comment:</label>
+                    <input id="comment" type="text" v-validate:comment="{ maxlength: 11 }">
+                </div>
+                <div class="errors">
+                    <p v-if="$validation1.username.required">Required your name.</p>
+                    <p v-if="$validation1.comment.maxlength">Your comment is too long.</p>
+                </div>
+                <input type="submit" value="send" v-if="$validation1.valid">
+            </form>
+        </validator> -->
+        <div class="header-bar">
+            <div class="container">
+                <nav-bar :items="navBar"></nav-bar>
+                <hot-bar></hot-bar>
+            </div>
+        </div>
+        <div class="main-content">
+            <list-item v-for="item in listItems" :item="item"></list-item>
+        </div>
+        <footer-bar></footer-bar>
+</body>
+<script src="https://cdn.bootcss.com/vue/1.0.24/vue.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://unpkg.com/vue-validator@2.1.7/dist/vue-validator.min.js"></script>
+<script>
+Vue.component('list-item', {
+    template:'<div class="news__item"><div class="news__item-zan"><span class="news__item-zan-icon"></span><span class="news__item-zan-number">8</span><span class="news__item-zan-text">赞</span></div><div class="news__item-comment"><a href="/p/1210000008465386"><div class="news__item-comment-inner"><span class="news__item-comment-box">0</span><span class="news__item-comment-box-arrow"></span></div></a></div><div class="news__item-info-title"><h4 class="news__item-title"><a class="mr10" target = "_blank">{{item.name}}</a></h4><p class = "news__item-meta"><span> <a class = "mr10" href = "/u/sunny"> {{item.author}}</a>5小时前发布于</span><a class="ml10" href="/news/frontend">{{item.place}}</a><href ="" class = "news__item-external-link" > {{item.url}}</a></p></div></div>',
+    props: ['item']
+})
+Vue.component('nav-bar', {
+    template: '<div class="nav"><ul><li v-for="item in items[0]" class="nav_item"><a href="nav_item">{{item}}</a></li><li v-for="item in items[1]" class="nav_item1"><a href="nav_item">{{item}}</a></li></ul></div>',
+    props: ['items']
+})
+Vue.component('hot-bar', {
+    template: '<div><div class="hot-logo"><h1><a href="/news"></a></h1><ul class="menu"><li class="menu_item"><a href="/news">热门的</a></li><li class=""><a href="/news/newest">最新的</a></li></ul></div>',
+    props: ['cc']
+})
+Vue.component('footer-bar', {
+    template: '<div></div>',
+    props: ['cc']
+})
+var example1 = new Vue({
+    el: '#app',
+    data: {
+        listItems: [{
+            message: 'Foo',
+            name:"web前端",
+            author:"aaaa",
+            place:"前端",
+            url:'zhuanlan.zhihu.com',
+        }, {
+            message: 'Foo',
+            name:"web前端",
+            author:"dddd",
+            place:"前端",
+            url:'zhuanlan.zhihu.com',
+        }],
+        navBar: [
+            ["问答", "专栏", "头条"],
+            ["前端", "后端", "iOS", "Android", "安全", "工具", "程序员"]
+        ]
+    }
+})
+</script>
+
+</html>
