@@ -80,7 +80,7 @@ var example1 = new Vue({
         }
     }
   ```
-  ##4、利用vue-validator校验
+##4、利用vue-validator校验
 >前提条件 
  * 1.下载vue-validator文件
  * 2.定义validator标签，并定义name属性，以便校验时使用
