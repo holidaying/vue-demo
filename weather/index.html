@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vue,Vue-resource Weather App</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,700,400' rel='stylesheet' type='text/css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.3.2/css/weather-icons.min.css'>
+    <link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
+    <link rel='stylesheet' href='./index.css'>
+</head>
+<body>
+    <div id="large-header" class="large-header">
+        <canvas id="demo-canvas"></canvas>
+    </div>
+    <div id="appBox">
+        <div id="app">
+            <header class="text-center">
+                <p><i class="wi wi-hail"></i>利用VUE、VUE-RESOURCE做的天气预报</p>
+            </header>
+            <div class="main-content">
+                <weather-show :weather="weatherData"></weather-show>
+            </div>
+            <div class="text-center all-icon">
+                <div class="icon sun-shower " v-if="status=='dizzle'">
+                    <div class="cloud"></div>
+                    <div class="sun">
+                        <div class="rays"></div>
+                    </div>
+                    <div class="rain"></div>
+                </div>
+                <div class="icon thunder-storm thunderstom" v-if="status=='thunderstom'">
+                    <div class="cloud"></div>
+                    <div class="lightning">
+                        <div class="bolt"></div>
+                        <div class="bolt"></div>
+                    </div>
+                </div>
+                <div class="icon cloudy clouds" v-if="status=='clouds'">
+                    <div class="cloud"></div>
+                    <div class="cloud"></div>
+                </div>
+                <div class="icon flurries snow" v-if="status=='snow'">
+                    <div class="cloud"></div>
+                    <div class="snow">
+                        <div class="flake"></div>
+                        <div class="flake"></div>
+                    </div>
+                </div>
+                <div class="icon sunny clear" v-if="status=='clear'">
+                    <div class="sun">
+                        <div class="rays"></div>
+                    </div>
+                </div>
+                <div class="icon rainy rain" v-if="status=='rain'">
+                    <div class="cloud"></div>
+                    <div class="rain"></div>
+                </div>
+            </div>
+            <div class="text-center copyright">
+                <p>打春雨惊田，春分清谷连。</p>
+                <p>立夏满芒种，夏至二暑还。</p>
+                <p>立秋暑白露，秋分寒露降。</p>
+                <p>立冬两场雪，冬至寒又寒。</p>
+                <a href="https://github.com/holidaying" target="_blank">作者|西安小哥</a></div>
+        </div>
+</body>
+<script src="https://cdn.bootcss.com/vue/1.0.24/vue.js" type="text/javascript" charset="utf-8"></script>
+<!-- <script src="vue-resource.js" type="text/javascript" charset="utf-8"></script> -->
+<script src="https://cdn.bootcss.com/vue-resource/1.2.1/vue-resource.js"></script>
+<script src='http://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/EasePack.min.js'></script>
+<script src='http://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/rAF.js'></script>
+<script src='http://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/js/TweenLite.min.js'></script>
+<script src='index.js'></script>
+<script>
+
+Vue.component('weather-show', {
+    template: '<div class="text-center status"><p>{{weather.city}}, {{weather.country}}</p><p>{{weather.temp}} &#176;<span class="temp" @click="sysWeather">{{weather.unit}}</span></p><p>{{weather.des}}</p></div>',
+    props: ['weather'],
+    methods: {
+        sysWeather: function() {
+            var self = this;
+            if (self.weather.sysChange) {
+                self.weather.unit = 'C';
+                self.weather.temp = self.weather.Cel;
+                self.weather.sysChange = false;
+            } else {
+                self.weather.unit = 'F';
+                self.weather.temp = self.weather.Fah;
+                self.weather.sysChange = true;
+            }
+
+        }
+    }
+})
+var example1 = new Vue({
+    el: '#app',
+    data() {
+        return {
+            weatherData: {
+                city: "",
+                country: "",
+                des: "",
+                unit: "C",
+                temp: "",
+                Fah: "",
+                Cel: "",
+            },
+            status: "clouds",
+        }
+    },
+    methods: {
+        submit: function(argument) {
+
+        },
+        getWeather: function() {
+            var self = this;
+            var object = {
+
+                getLoc: function() {
+                    var that = this;
+                    Vue.http.jsonp('http://ipinfo.io/json').then(function(data) {
+                        self.weatherData.city = data.data.city;
+                        self.weatherData.country = data.data.country;
+                        that.getCurrent(data.data);
+                    });
+                },
+                getCurrent: function(data) {
+                    var that = this;
+                    var api = "http://api.openweathermap.org/data/2.5/weather?q=";
+                    var units = "&units=metric";
+                    var appid = "&APPID=061f24cf3cde2f60644a8240302983f2"
+                    var cb = "&callback=JSON_CALLBACK";
+                    var city = data.city + ',' + data.country;
+
+                    Vue.http.jsonp(api + city + units + appid).then(function(data) {
+                        that.weatherShow(data);
+                    });
+                },
+                weatherShow: function(data) {
+                    self.weatherData.des = data.data.weather[0].main;
+                    self.weatherData.temp = Math.round(data.data.main.temp);
+                    self.weatherData.Cel = Math.round(data.data.main.temp);
+                    self.weatherData.Fah = Math.round((self.weatherData.temp * 9) / 5 + 32);
+                    self.iconGen(self.weatherData.des);
+                },
+            };
+            object.getLoc();
+        },
+        iconGen: function(city) {
+            var self = this;
+            var city = city.toLowerCase();
+            self.status = city;
+        },
+    },
+    ready: function() {
+        var getWeather = this.getWeather();
+    }
+})
+</script>
+
+</html>
