@@ -119,7 +119,7 @@ var example1 = new Vue({
 
                 getLoc: function() {
                     var that = this;
-                    Vue.http.jsonp('http://ipinfo.io/json').then(function(data) {
+                    Vue.http.jsonp('https://ipinfo.io/json').then(function(data) {
                         self.weatherData.city = data.data.city;
                         self.weatherData.country = data.data.country;
                         that.getCurrent(data.data);
@@ -127,7 +127,7 @@ var example1 = new Vue({
                 },
                 getCurrent: function(data) {
                     var that = this;
-                    var api = "http://api.openweathermap.org/data/2.5/weather?q=";
+                    var api = "https://api.openweathermap.org/data/2.5/weather?q=";
                     var units = "&units=metric";
                     var appid = "&APPID=061f24cf3cde2f60644a8240302983f2"
                     var cb = "&callback=JSON_CALLBACK";
