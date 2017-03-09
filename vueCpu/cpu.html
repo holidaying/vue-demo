@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue demo</title>
+</head>
+<style>
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    font-family: Helvetica Neue, Helvetica, Arial, PingFang SC, Hiragino Sans GB, WenQuanYi Micro Hei, Microsoft Yahei, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fafafa;
+}
+
+.eChart {
+    height: 230px;
+}
+
+header {
+    margin-bottom: 30px;
+    height: 60px;
+    background: #000;
+    line-height: 60px;
+    font: 14px;
+    color: #fff;
+}
+
+header p {
+    float: right;
+    padding-right: 40px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #434343;
+    background-image: linear-gradient(#434343, #282828);
+}
+
+#content {
+    background-color: transparent;
+    background-image: linear-gradient(0deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(255, 255, 255, .05) 25%, rgba(255, 255, 255, .05) 26%, transparent 27%, transparent 74%, rgba(255, 255, 255, .05) 75%, rgba(255, 255, 255, .05) 76%, transparent 77%, transparent);
+    height: 100%;
+    background-size: 50px 50px;
+    text-align: center;
+}
+
+.copyright {
+    width: 360px;
+    display: inline-block;
+    background: rgba(0, 0, 0, .3);
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 100px;
+}
+
+.copyright p {
+    margin: 0 0 10px;
+    text-align: left;
+    color: rgba(255, 255, 255, 0.6);
+}
+</style>
+
+<body>
+    <div id="app">
+        <div id="content">
+            <header class="text-center">
+                <p>利用VUE、ECHART做的CPU</p>
+            </header>
+            <div class="main-content">
+                <cup-demo></cup-demo>
+            </div>
+            <div class="text-center copyright">
+                <p>我能抽象出整个世界．．． </p>
+                <p>因为你在我心中是那么的具体．．．</p>
+                <p>所以我的世界并不完整．．． </p>
+                <p>我可以重载甚至覆盖这个世界里的任何一种方法．．． </p>
+                <p>但是我却不能重载对你的思念．．． </p>
+                <p>也许命中注定了 你在我的世界里永远的烙上了静态的属性．．． </p>
+                <p> 而我不慎调用了爱你这个方法．．．</p>
+                <p>当我义无返顾的把自己作为参数传进这个方法时．．． </p>
+                <p>我才发现爱上你是一个死循环．．． </p>
+                <a href="https://github.com/holidaying" target="_blank">作者|西安小哥</a></div>
+        </div>
+    </div>
+    <!-- 路由匹配到的组件将渲染在这里 -->
+</body>
+<script src="https://cdn.bootcss.com/vue/1.0.24/vue.js" type="text/javascript" charset="utf-8"></script>
+<script src="./echarts2.js"></script>
+<script>
+window.timeTransformHS = function(value) {
+    var data = new Date(value);
+    var hours = data.getHours() > 9 ? data.getHours().toString() : '0' + data.getHours();
+    var minutes = data.getMinutes() > 9 ? data.getMinutes().toString() : '0' + data.getMinutes();
+    var ss = data.getSeconds() > 9 ? data.getSeconds().toString() : '0' + data.getSeconds();
+    value = hours + ":" + minutes + ":" + ss;
+    return value;
+}; //返回的时分秒
+var myChart;
+var timeTicket = null;
+Vue.component('cup-demo', {
+    template: '<div id="eChart-container" class="eChart"></div>',
+    props: ['item'],
+    //数据对象
+    data: function() {
+        return {
+            nowTime: new Date().getTime(),
+            staticData: "",
+            staticName: "",
+            firstRequsetData: 0,
+            addData: 0,
+            initRequsetData: []
+
+        };
+    },
+    beforeDestroy: function() {
+        clearInterval(timeTicket);
+    },
+    ready: function() {
+        //获取经典统计并初始化数据
+        var self = this;
+        timeS = 1;
+        self.initRequsetData = [0, '2', '1', '3', '5', '6', '10', '12', '23', '10']
+            // 基于准备好的dom，初始化echarts实例
+        myChart = echarts.init(document.getElementById('eChart-container'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '卡口流量',
+                left: 'left',
+                show: false,
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: function(item) {
+                    var html = "";
+                    var Time = new Date().getHours();
+                    var hour = Time;
+                    if (item.dataIndex == 12) {
+                        hour = Time + 1;
+                    }
+                    var html = '时间：<span class="fc-cf9">' + item.name + '</span><br>';
+                    html += item.seriesName + "：" + item.value;
+                    return html
+                },
+                position: 'inside',
+                // backgroundColor: "#485158",
+                textStyle: {
+                    color: '#fff',
+                }
+            },
+            grid: {
+                x: '5%',
+                y: '20',
+                width: '90%',
+                height: '190',
+                borderWidth: '0px',
+                borderColor: 'transparent',
+            },
+            xAxis: {
+                type: 'category',
+                // name: 'x',
+                splitLine: {
+                    show: false,
+                },
+                boundaryGap: false,
+                axisLine: {
+                    onZero: true,
+                    lineStyle: {
+                        color: 'rgba(39,174,96,1)',
+                    },
+                },
+                axisLabel: {
+                    //X轴刻度配置
+                    interval: 0, //0：表示全部显示不间隔；auto:表示自动根据刻度个数和宽度自动设置间隔个数,
+                },
+                data: (function() {
+                    var now = new Date().getTime();
+                    var res = [];
+                    var len = 10;
+                    while (len--) {
+                        res.push(timeTransformHS(now)); //获取当前秒数(0-59));
+                        now = now - 1000 * 6 * (10 - len + 1);
+                    }
+                    return res.reverse();
+                })()
+            },
+            yAxis: {
+                type: 'value',
+                splitLine: {
+                    show: false,
+                },
+                axisLine: {
+                    onZero: true,
+                    lineStyle: {
+                        color: 'rgba(39,174,96,1)',
+                    }
+                },
+                axisLabel: {
+                    show: true,
+                    formatter: function(a) {
+                        var str;
+                        if (a < 10000) {
+                            str = a;
+                        } else if (a < 100000000) {
+                            str = (a / 10000.0).toFixed(1) + '万';
+                        } else {
+                            str = (a / 100000000.0).toFixed(1) + '亿';
+                        }
+                        return str;
+                    }
+                },
+                minInterval: 1
+            },
+            series: [{
+                sampling: 'max',
+                itemStyle: {
+                    normal: {
+                        color: 'rgba(39,174,96,0.8)'
+                    }
+                },
+                areaStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: 'rgba(39,174,96,0.2)'
+                        }, {
+                            offset: 0,
+                            color: 'rgba(39,174,96,0.2)'
+                        }])
+                    }
+                },
+                smooth: true,
+                name: "CPU",
+                type: 'line',
+                animationDurationUpdate: 1000,
+                data: self.initRequsetData,
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        self.pushData();
+    },
+    methods: {
+        pushData: function() {
+            var self = this;
+            clearInterval(timeTicket);
+            timeTicket = setInterval(function() {
+                var now = new Date().getTime();
+                var option = myChart.getOption();
+                var data = Math.random() * 100;
+                self.addData = Math.abs(data - self.firstRequsetData); //求差值
+                self.initRequsetData.push(self.addData);
+                option.xAxis[0].data.push(timeTransformHS(now));
+                self.initRequsetData.shift();
+                option.xAxis[0].data.shift();
+                option.series[0].data = self.initRequsetData;
+                myChart.setOption(option);
+                self.firstRequsetData = data;
+            }, 6000);
+        },
+    }
+});
+var example1 = new Vue({
+    el: '#app',
+    data: {},
+    methods: {}
+});
+</script>
+
+</html>
