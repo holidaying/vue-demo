@@ -8,6 +8,8 @@
 
 > :car:vue resource demo:(点这里)[ https://holidaying.github.io/vue-demo/weather/index.html]
 
+> :car:vue CPU demo:(点这里)[ https://holidaying.github.io/vue-demo/vueCpu/index.html]
+
 主图
 ![Paste_Image.png](http://upload-images.jianshu.io/upload_images/2604175-c5f7c3d28591c35c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 ##1、首先这是单页面(cdn引入)，非单独文件组件开发（npm构建的）。
